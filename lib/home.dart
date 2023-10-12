@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'buy_tickets/buy_ticket.dart';
 import 'enddrawer.dart';
 import 'queue/queue.dart';
+import 'sold_tickets/tickets.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -279,7 +280,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const BuyTicket(), //
+                        builder: (context) => const SoldTickets(), //
                       ),
                     );
                   },

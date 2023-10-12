@@ -10,14 +10,14 @@ import '../models/bus.dart';
 import '../models/user.dart';
 import '../result/ticket_result.dart';
 
-class BuyTicket extends StatefulWidget {
-  const BuyTicket({super.key});
+class AddBus extends StatefulWidget {
+  const AddBus({super.key});
 
   @override
-  BuyTicketState createState() => BuyTicketState();
+  AddBusState createState() => AddBusState();
 }
 
-class BuyTicketState extends State<BuyTicket> {
+class AddBusState extends State<AddBus> {
   final TextEditingController firstname = TextEditingController();
   final TextEditingController lastname = TextEditingController();
   final TextEditingController phone = TextEditingController();

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../models/bus.dart';
+import '../result/bus_result.dart';
 
 class BusQueue extends StatefulWidget {
   const BusQueue({Key? key});
@@ -49,11 +50,24 @@ class BusQueueState extends State<BusQueue> {
               itemCount: _busList.length,
               itemBuilder: (context, index) {
                 BusInfo bus = _busList[index];
-                return ListTile(
-                  title: Text('Bus Number: ${bus.busNumber}'),
-                  subtitle: Text(
-                      'Current Capacity: ${bus.currentCapacity}/${bus.totalCapacity}'),
-                  // Add more details here if needed
+                return InkWell(
+                  onTap: () {
+                    // BusResult()
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BusResult(
+                          bus: bus,
+                        ),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    title: Text('Bus Number: ${bus.busNumber}'),
+                    subtitle: Text(
+                        'Current Capacity: ${bus.currentCapacity}/${bus.totalCapacity}'),
+                    // Add more details here if needed
+                  ),
                 );
               },
             ),
