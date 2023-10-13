@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transport_app/models/user.dart';
 import 'dart:convert';
 
-import '../tickets_result.dart/result.dart';
+import '../result/ticket_result.dart';
 
 class SoldTickets extends StatefulWidget {
   const SoldTickets({Key? key});
@@ -61,7 +61,7 @@ class SoldTicketsState extends State<SoldTickets> {
             child: TextField(
               onChanged:
                   _filterUsers, // Call _filterUsers method on text change
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Search a User',
               ),
@@ -70,7 +70,7 @@ class SoldTicketsState extends State<SoldTickets> {
 
           Expanded(
             child: _filteredUsers.isEmpty
-                ? Center(child: Text('No matching users found.'))
+                ? const Center(child: Text('No matching users found.'))
                 : ListView.builder(
                     itemCount: _filteredUsers.length,
                     itemBuilder: (context, index) {

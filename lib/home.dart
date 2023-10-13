@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:transport_app/add_bus/add_bus.dart';
 
 import 'buy_tickets/buy_ticket.dart';
 import 'enddrawer.dart';
@@ -26,6 +27,10 @@ class _HomeState extends State<Home> {
     {
       'title': 'See Tickets Sold',
       'image': 'assets/images/tickets.jpg',
+    },
+    {
+      'title': 'Add Bus',
+      'image': 'assets/images/add_bus.png',
     },
   ];
 
@@ -320,6 +325,66 @@ class _HomeState extends State<Home> {
                               child: Text(
                                 // textAlign: TextAlign.left,
                                 data_list[2]['title'].toUpperCase(),
+                                maxLines: 4,
+                                style: const TextStyle(
+                                    fontSize: 17,
+                                    fontFamily: "Urbanist-Regular"),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: InkWell(
+                  onTap: () async {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddBus(), //
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.12,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(190, 196, 202, 0.2),
+                          blurRadius: 14,
+                          offset: Offset(0, 9),
+                        ),
+                      ],
+                    ),
+                    child: Card(
+                      surfaceTintColor: Colors.white,
+                      margin: const EdgeInsets.all(0),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            width: 60,
+                            child: Image.asset(data_list[3]['image']),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                // textAlign: TextAlign.left,
+                                data_list[3]['title'].toUpperCase(),
                                 maxLines: 4,
                                 style: const TextStyle(
                                     fontSize: 17,

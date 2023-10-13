@@ -35,7 +35,7 @@ class BuyTicketState extends State<BuyTicket> {
   ];
   String selectedDestination = 'Addis Ababa';
   List<BusInfo> _busList = [];
-
+  String selectedBusNumber = 'ET 1234';
   Future<void> _loadBusList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String busJson = prefs.getString('bus_info') ?? '[]';
@@ -61,12 +61,11 @@ class BuyTicketState extends State<BuyTicket> {
     destination.text = "Addis Ababa";
     date.text = "2021-10-10";
     _loadBusList();
+    selectedBusNumber = _busList.isNotEmpty ? _busList[0].busNumber : 'ET 1234';
   }
 
   @override
   Widget build(BuildContext context) {
-    String selectedBusNumber = _busList[0].busNumber;
-
     return Scaffold(
       backgroundColor: MyColors.grey_5,
       appBar: AppBar(
