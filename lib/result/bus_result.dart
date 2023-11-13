@@ -6,7 +6,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class BusResult extends StatefulWidget {
   final BusInfo bus;
-  const BusResult({super.key, required this.bus});
+  const BusResult({required this.bus});
 
   @override
   BusResultState createState() => BusResultState();

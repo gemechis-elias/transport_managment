@@ -12,7 +12,7 @@ import '../models/user.dart';
 import '../result/ticket_result.dart';
 
 class AddBus extends StatefulWidget {
-  const AddBus({super.key});
+  // const AddBus({super.key});
 
   @override
   AddBusState createState() => AddBusState();

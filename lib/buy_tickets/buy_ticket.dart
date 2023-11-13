@@ -11,7 +11,7 @@ import '../models/user.dart';
 import '../result/ticket_result.dart';
 
 class BuyTicket extends StatefulWidget {
-  const BuyTicket({super.key});
+  // const BuyTicket({super.key});
 
   @override
   BuyTicketState createState() => BuyTicketState();

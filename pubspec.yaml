@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.1 <4.0.0'
+  sdk: '>= 2.17.0 < 3.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -37,6 +37,17 @@ dependencies:
   cupertino_icons: ^1.0.2
   qr_flutter: ^4.1.0
   shared_preferences: ^2.2.2
+  printing: ^5.11.1
+  intl: ^0.18.1
+  bluetooth_print: ^4.3.0
+  print_bluetooth_thermal: ^1.0.9
+  # flutter_simple_bluetooth_printer: ^0.1.4
+  # esc_pos_utils_plus: ^2.0.2
+  # barcode: ^2.2.4
+  # barcode_image: ^2.0.3
+  # image: ^4.1.3
+  # bluetooth_thermal_printer: ^0.0.6
+  # esc_pos_utils: ^1.1.0
 
 dev_dependencies:
   flutter_test:

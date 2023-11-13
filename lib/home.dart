@@ -164,7 +164,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const BuyTicket(), //
+                        builder: (context) =>  BuyTicket(), //
                       ),
                     );
                   },
@@ -345,7 +345,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AddBus(), //
+                        builder: (context) =>  AddBus(), //
                       ),
                     );
                   },
@@ -401,7 +401,7 @@ class _HomeState extends State<Home> {
             ],
           ),
         ),
-        drawer: const EndDrawers(),
+        drawer:  EndDrawers(),
       ),
     );
   }
