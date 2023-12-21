@@ -1,11 +1,11 @@
 class BusInfo {
-  String busNumber;
+  String plateNumber;
   int totalCapacity;
   int currentCapacity;
   String destination;
 
   BusInfo({
-    required this.busNumber,
+    required this.plateNumber,
     required this.totalCapacity,
     required this.currentCapacity,
     required this.destination,
@@ -13,7 +13,7 @@ class BusInfo {
 
   Map<String, dynamic> toJson() {
     return {
-      'busNumber': busNumber,
+      'busNumber': plateNumber,
       'totalCapacity': totalCapacity,
       'currentCapacity': currentCapacity,
       'destination': destination,
@@ -22,7 +22,7 @@ class BusInfo {
 
   factory BusInfo.fromJson(Map<String, dynamic> json) {
     return BusInfo(
-      busNumber: json['busNumber'] ?? '',
+      plateNumber: json['plateNumber'] ?? '',
       totalCapacity: json['totalCapacity'] ?? 0,
       currentCapacity: json['currentCapacity'] ?? 0,
       destination: json['destination'] ?? '',

@@ -4,11 +4,11 @@ import '../core/my_colors.dart';
 import '../core/my_text.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../models/user.dart';
+import '../models/ticket.dart';
 
 class ResultPage extends StatefulWidget {
-  final User user;
-  const ResultPage({required this.user});
+  final Ticket ticket;
+  const ResultPage({required this.ticket});
 
   @override
   ResultPageState createState() => ResultPageState();
@@ -25,34 +25,25 @@ class ResultPageState extends State<ResultPage> {
     return Scaffold(
       backgroundColor: MyColors.grey_5,
       appBar: AppBar(
-          backgroundColor: Colors.green,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+        backgroundColor: Colors.green,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
           ),
-          title: const Text("Result",
-              style: TextStyle(color: Colors.white, fontSize: 18)),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.print,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PrinterPage(user: widget.user),
-                  ),
-                );
-              },
-            ),
-          ]),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          "Result",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         scrollDirection: Axis.vertical,
@@ -70,83 +61,193 @@ class ResultPageState extends State<ResultPage> {
                   children: [
                     const Row(
                       children: [
-                        Text("Passenger Information",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)),
+                        Text(
+                          "Passenger Information",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
-                        const Text("Name: ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        Text(widget.user.firstName + " " + widget.user.lastName,
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal)),
+                        const Text(
+                          "Tailure: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.tailure,
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
                       ],
                     ),
                     Row(
                       children: [
-                        const Text("Phone: ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        Text(widget.user.phone,
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal)),
+                        const Text(
+                          "Plate No: ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          widget.ticket.plate,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Row(
+                    //   children: [
+                    //     const Text("Bus Number: ",
+                    //         style: TextStyle(
+                    //             color: Colors.black,
+                    //             fontSize: 16,
+                    //             fontWeight: FontWeight.bold)),
+                    //     Text(widget.user.busNumber,
+                    //         style: const TextStyle(
+                    //             color: Colors.black,
+                    //             fontSize: 16,
+                    //             fontWeight: FontWeight.normal)),
+                    //   ],
+                    // ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Departure: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.departure.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
                       ],
                     ),
                     Row(
                       children: [
-                        const Text("Bus Number: ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        Text(widget.user.busNumber,
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal)),
-                      ],
-                    ),
-                    const Row(
-                      children: [
-                        Text("Seat Number: ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        Text("10",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal)),
+                        const Text(
+                          "Destination: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.destination.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
                       ],
                     ),
                     Row(
                       children: [
-                        const Text("Unique ID: ",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                        Text(widget.user.uniqueId.toString(),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal)),
+                        const Text(
+                          "Level: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.level.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Unique ID: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.uniqueId.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Tariff: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.tariff.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Service Charge: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.charge.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Date: ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.ticket.date.toString(),
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal),
+                        ),
                       ],
                     ),
                   ],
@@ -165,13 +266,38 @@ class ResultPageState extends State<ResultPage> {
                   ),
                   child: Center(
                     child: QrImageView(
-                      data: widget.user.uniqueId.toString(),
+                      data: widget.ticket.uniqueId.toString(),
                       version: QrVersions.auto,
                       size: 200.0,
                     ),
                   )),
 
               const SizedBox(height: 10),
+              Container(height: 15),
+              SizedBox(
+                width: double.infinity,
+                height: 45,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    "Print Ticket",
+                    style:
+                        MyText.subhead(context)!.copyWith(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            PrinterPage(ticket: widget.ticket),
+                      ),
+                    );
+                  },
+                ),
+              )
 
               // Bon Voyage Text
             ],

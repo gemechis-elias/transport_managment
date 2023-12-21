@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'home.dart';
 import 'splash/splash_screen.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en', "US"), Locale('am', 'ET'),Locale('or', 'ET')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en', 'US'),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,6 +31,9 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 58, 183, 110)),
         useMaterial3: true,
       ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       home: const Splash(),
     );
   }

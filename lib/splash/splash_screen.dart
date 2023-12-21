@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transport_app/auth/pinScreen.dart';
 import '../home.dart';
 
 class Splash extends StatefulWidget {
@@ -27,13 +28,13 @@ class _SplashState extends State<Splash> {
           // If visited before, navigate to Home()
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => const Pininput()),
           );
         } else {
           // If first visit, navigate to OnBoardingScreen()
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const Home()),
+            MaterialPageRoute(builder: (context) => const Pininput()),
           );
 
           // Set visited_before flag to true for future visits
@@ -51,10 +52,10 @@ class _SplashState extends State<Splash> {
         decoration: const BoxDecoration(color: Colors.white70),
         child: Center(
           child: Container(
-            width: 250,
-            height: 100,
+            width: 450,
+            height: 200,
             margin: const EdgeInsets.only(bottom: 50),
-            child: Image.asset('assets/images/bus.jpg'),
+            child: Image.asset('assets/images/bus.png'),
           ),
         ),
       ),

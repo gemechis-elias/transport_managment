@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,9 +31,9 @@ class _EndDrawersState extends State<EndDrawers> {
               Icons.info_outline,
               color: Color(0xFF0E5120),
             ),
-            title: const Text(
-              'About Us',
-              style: TextStyle(
+            title:  Text(
+              'aboutus'.tr(),
+              style: const TextStyle(
                 fontFamily: 'Urbanist-Bold',
                 fontSize: 16,
               ),
@@ -68,9 +69,9 @@ class _EndDrawersState extends State<EndDrawers> {
               Icons.share,
               color: Color(0xFF0E5120),
             ),
-            title: const Text(
-              'Share This App',
-              style: TextStyle(
+            title:  Text(
+              'shareApp'.tr(),
+              style: const TextStyle(
                 fontFamily: 'Urbanist-Bold',
                 fontSize: 16,
               ),
@@ -85,9 +86,9 @@ class _EndDrawersState extends State<EndDrawers> {
               Icons.help,
               color: Color(0xFF0E5120),
             ),
-            title: const Text(
-              'FAQs',
-              style: TextStyle(
+            title:  Text(
+              'faqs'.tr(),
+              style: const TextStyle(
                 fontFamily: 'Urbanist-Bold',
                 fontSize: 16,
               ),
@@ -106,9 +107,9 @@ class _EndDrawersState extends State<EndDrawers> {
               Icons.logout,
               color: Color(0xFF0E5120),
             ),
-            title: const Text(
-              'Log Out',
-              style: TextStyle(
+            title:  Text(
+              'logout'.tr(),
+              style: const TextStyle(
                 fontFamily: 'Urbanist-Bold',
                 fontSize: 16,
               ),

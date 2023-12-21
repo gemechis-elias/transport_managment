@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'dart:developer' as developer;
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/my_colors.dart';
 import '../core/my_text.dart';
 import '../models/bus.dart';
-import '../models/user.dart';
+import '../models/ticket.dart';
 import '../result/ticket_result.dart';
 
 class BuyTicket extends StatefulWidget {
@@ -18,12 +19,16 @@ class BuyTicket extends StatefulWidget {
 }
 
 class BuyTicketState extends State<BuyTicket> {
-  final TextEditingController firstname = TextEditingController();
-  final TextEditingController lastname = TextEditingController();
-  final TextEditingController phone = TextEditingController();
+  final TextEditingController Tailure = TextEditingController();
+  final TextEditingController level = TextEditingController();
+  final TextEditingController plateNumber = TextEditingController();
   final TextEditingController bus_no = TextEditingController();
   final TextEditingController destination = TextEditingController();
+  final TextEditingController departure = TextEditingController();
   final TextEditingController date = TextEditingController();
+  final TextEditingController tariff = TextEditingController();
+  final TextEditingController serviceCharge = TextEditingController();
+
   List<String> sampleDestinations = [
     'Addis Ababa',
     'Bahir Dar',
@@ -33,35 +38,68 @@ class BuyTicketState extends State<BuyTicket> {
     'Harar',
     // Add more destinations as needed
   ];
+  List<String> Departure = [
+    'Addis Ababa',
+    'Adama',
+    'Bahir Dar',
+    'Gondar',
+    'Axum',
+    'Lalibela',
+    'Harar',
+    // Add more destinations as needed
+  ];
   String selectedDestination = 'Addis Ababa';
-  List<BusInfo> _busList = [];
+  String selectedDeparture = 'Adama';
   String selectedBusNumber = 'ET 1234';
+  List<String> busList = [
+    'ET 1234',
+    'ET 2345',
+    'ET 3456',
+    'ET 4567',
+  ];
+
   Future<void> _loadBusList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String busJson = prefs.getString('bus_info') ?? '[]';
     List<dynamic> busData = json.decode(busJson);
-    List<BusInfo> buses =
-        busData.map((data) => BusInfo.fromJson(data)).toList();
+    // List<BusInfo> buses =
+    //     busData.map((data) => BusInfo.fromJson(data)).toList();
 
     // Sort the list of buses by current capacity in descending order
-    buses.sort((a, b) => b.currentCapacity.compareTo(a.currentCapacity));
+    // buses.sort((a, b) => b.currentCapacity.compareTo(a.currentCapacity));
 
-    setState(() {
-      _busList = buses;
-    });
+    // setState(() {
+    //   busList = buses;
+    // });
   }
 
   @override
   void initState() {
     super.initState();
-    firstname.text = "Gemechis";
-    lastname.text = "Elias";
-    phone.text = "0912345678";
-    bus_no.text = "ET 1234";
+    Tailure.text = "Gemechis";
+    level.text = "Level 2";
+    plateNumber.text = "ET 1234";
+    departure.text = "Adama";
     destination.text = "Addis Ababa";
-    date.text = "2021-10-10";
+
     _loadBusList();
-    selectedBusNumber = _busList.isNotEmpty ? _busList[0].busNumber : 'ET 1234';
+    // selectedBusNumber = busList.isNotEmpty ? busList[0].plateNumber : '';
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2023),
+      lastDate: DateTime(2024),
+    );
+
+    if (picked != null && picked != DateTime.now()) {
+      // Save only month and year to the text field
+      final String formattedDate =
+          "${picked.day}/${picked.month}/${picked.year}";
+      date.text = formattedDate;
+    }
   }
 
   @override
@@ -79,8 +117,15 @@ class BuyTicketState extends State<BuyTicket> {
               Navigator.pop(context);
             },
           ),
-          title: const Text("Buy Ticket",
-              style: TextStyle(color: Colors.white, fontSize: 18)),
+          title: Text(
+            "Buy Ticket".tr(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontFamily: 'Poppins-Regular',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           actions: <Widget>[
             IconButton(
               icon: const Icon(
@@ -98,9 +143,15 @@ class BuyTicketState extends State<BuyTicket> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("FIRST NAME",
-                  style:
-                      MyText.body1(context)!.copyWith(color: MyColors.grey_60)),
+              Text(
+                "Tailor".tr(),
+                style: const TextStyle(
+                  color: MyColors.grey_60,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Light',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               Container(height: 5),
               Card(
                 shape: RoundedRectangleBorder(
@@ -110,12 +161,17 @@ class BuyTicketState extends State<BuyTicket> {
                 margin: const EdgeInsets.all(0),
                 elevation: 0,
                 child: Container(
-                  height: 40,
+                  height: 50,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
                     maxLines: 1,
-                    controller: firstname,
+                    controller: Tailure,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Poppins-Light',
+                      fontWeight: FontWeight.bold,
+                    ),
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(-12),
                       border: InputBorder.none,
@@ -124,35 +180,15 @@ class BuyTicketState extends State<BuyTicket> {
                 ),
               ),
               Container(height: 15),
-              Text("LAST NAME",
-                  style:
-                      MyText.body1(context)!.copyWith(color: MyColors.grey_60)),
-              Container(height: 5),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3),
-                ),
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                margin: const EdgeInsets.all(0),
-                elevation: 0,
-                child: Container(
-                  height: 40,
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextField(
-                    maxLines: 1,
-                    controller: lastname,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(-12),
-                      border: InputBorder.none,
-                    ),
-                  ),
+              Text(
+                "Level".tr(),
+                style: const TextStyle(
+                  color: MyColors.grey_60,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Light',
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(height: 15),
-              Text("PHONE",
-                  style:
-                      MyText.body1(context)!.copyWith(color: MyColors.grey_60)),
               Container(height: 5),
               Card(
                 shape: RoundedRectangleBorder(
@@ -162,13 +198,17 @@ class BuyTicketState extends State<BuyTicket> {
                 margin: const EdgeInsets.all(0),
                 elevation: 0,
                 child: Container(
-                  height: 40,
+                  height: 50,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
                     maxLines: 1,
-                    keyboardType: TextInputType.phone,
-                    controller: phone,
+                    controller: level,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Poppins-Light',
+                      fontWeight: FontWeight.bold,
+                    ),
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(-12),
                       border: InputBorder.none,
@@ -183,9 +223,15 @@ class BuyTicketState extends State<BuyTicket> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("BUS NUMBER",
-                            style: MyText.body1(context)!
-                                .copyWith(color: MyColors.grey_60)),
+                        Text(
+                          "Bus Plate Number".tr(),
+                          style: const TextStyle(
+                            color: MyColors.grey_60,
+                            fontSize: 14,
+                            fontFamily: 'Poppins-Light',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Container(height: 5),
                         Card(
                           shape: RoundedRectangleBorder(
@@ -195,7 +241,7 @@ class BuyTicketState extends State<BuyTicket> {
                           margin: const EdgeInsets.all(0),
                           elevation: 0,
                           child: Container(
-                            height: 40,
+                            height: 50,
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: Row(
@@ -204,25 +250,30 @@ class BuyTicketState extends State<BuyTicket> {
                                 Expanded(
                                   child: DropdownButton<String>(
                                     value: selectedBusNumber,
-                                    items: _busList.map((BusInfo bus) {
+                                    items: busList.map((String plateNumber) {
                                       return DropdownMenuItem<String>(
-                                        value: bus.busNumber,
-                                        child: Text(bus.busNumber),
+                                        value: plateNumber,
+                                        child: Text(
+                                          plateNumber,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Poppins-Light',
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         selectedBusNumber = newValue ?? '';
+                                        plateNumber.text = newValue!;
                                       });
                                     },
-                                    underline:
-                                        Container(), // Removes the underline
+                                    underline: Container(),
                                   ),
                                 ),
-                                // const Icon(Icons.expand_more,
-                                //     color: MyColors.grey_40),
                               ],
-                            ),
+                            ), // Handle the case when busList is empty
                           ),
                         ),
                       ],
@@ -233,9 +284,15 @@ class BuyTicketState extends State<BuyTicket> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("Date",
-                            style: MyText.body1(context)!
-                                .copyWith(color: MyColors.grey_60)),
+                        Text(
+                          "Date".tr(),
+                          style: const TextStyle(
+                            color: MyColors.grey_60,
+                            fontSize: 14,
+                            fontFamily: 'Poppins-Light',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Container(height: 5),
                         Card(
                           shape: RoundedRectangleBorder(
@@ -245,16 +302,26 @@ class BuyTicketState extends State<BuyTicket> {
                           margin: const EdgeInsets.all(0),
                           elevation: 0,
                           child: Container(
-                            height: 40,
+                            height: 50,
                             alignment: Alignment.centerLeft,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: TextField(
                               maxLines: 1,
-                              keyboardType: TextInputType.phone,
+                              // keyboardType: TextInputType.phone,
                               controller: date,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(-12),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Poppins-Light',
+                                fontWeight: FontWeight.bold,
+                              ),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(0, 5, 5, 5),
                                 border: InputBorder.none,
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.date_range),
+                                  onPressed: () => _selectDate(context),
+                                  color: Color(0xffB2B5BB),
+                                ),
                               ),
                             ),
                           ),
@@ -266,8 +333,13 @@ class BuyTicketState extends State<BuyTicket> {
               ),
               Container(height: 15),
               Text(
-                "DESTINATION",
-                style: MyText.body1(context)!.copyWith(color: MyColors.grey_60),
+                "Departure".tr(),
+                style: const TextStyle(
+                  color: MyColors.grey_60,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Light',
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Container(height: 5),
               Card(
@@ -278,7 +350,7 @@ class BuyTicketState extends State<BuyTicket> {
                 margin: const EdgeInsets.all(0),
                 elevation: 0,
                 child: Container(
-                  height: 40,
+                  height: 50,
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Row(
@@ -286,16 +358,24 @@ class BuyTicketState extends State<BuyTicket> {
                       Container(width: 15),
                       Expanded(
                         child: DropdownButton<String>(
-                          value: selectedDestination,
-                          items: sampleDestinations.map((String destination) {
+                          value: selectedDeparture,
+                          items: Departure.map((String departure) {
                             return DropdownMenuItem<String>(
-                              value: destination,
-                              child: Text(destination),
+                              value: departure,
+                              child: Text(
+                                departure,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Poppins-Light',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
                             setState(() {
-                              selectedDestination = newValue ?? '';
+                              selectedDeparture = newValue ?? '';
+                              departure.text = newValue!;
                             });
                           },
                           underline: Container(), // Removes the underline
@@ -307,28 +387,169 @@ class BuyTicketState extends State<BuyTicket> {
                 ),
               ),
               Container(height: 15),
+              Text(
+                "Destination".tr(),
+                style: const TextStyle(
+                  color: MyColors.grey_60,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Light',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(height: 5),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                margin: const EdgeInsets.all(0),
+                elevation: 0,
+                child: Container(
+                  height: 50,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Container(width: 15),
+                      Expanded(
+                        child: DropdownButton<String>(
+                          value: selectedDestination,
+                          items: sampleDestinations.map((String destination) {
+                            return DropdownMenuItem<String>(
+                              value: destination,
+                              child: Text(
+                                destination,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: 'Poppins-Light',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedDestination = newValue ?? '';
+                              destination.text = newValue!;
+                            });
+                          },
+                          underline: Container(), // Removes the underline
+                        ),
+                      ),
+                      // const Icon(Icons.expand_more, color: MyColors.grey_40),
+                    ],
+                  ),
+                ),
+              ),
+              Container(height: 15),
+              Text(
+                "Tariff".tr(),
+                style: const TextStyle(
+                  color: MyColors.grey_60,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Light',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(height: 5),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                margin: const EdgeInsets.all(0),
+                elevation: 0,
+                child: Container(
+                  height: 50,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    maxLines: 1,
+                    controller: tariff,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Poppins-Light',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(-12),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              Container(height: 15),
+              Text(
+                "Service Charge".tr(),
+                style: const TextStyle(
+                  color: MyColors.grey_60,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Light',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Container(height: 5),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                margin: const EdgeInsets.all(0),
+                elevation: 0,
+                child: Container(
+                  height: 50,
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    maxLines: 1,
+                    controller: serviceCharge,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'Poppins-Light',
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(-12),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              Container(height: 15),
               SizedBox(
                 width: double.infinity,
                 height: 45,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: MyColors.primary, elevation: 0),
-                  child: Text("SUBMIT",
-                      style: MyText.subhead(context)!
-                          .copyWith(color: Colors.white)),
+                  child: Text(
+                    "SUBMIT".tr(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'Poppins-Regular',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   onPressed: () async {
                     //
-                    User user = User(
-                      firstName: firstname.text,
-                      lastName: lastname.text,
-                      phone: phone.text,
+                    print('Submit button pressed.');
+                    print('Plate Number: ${plateNumber.text}');
+                    print('departure: ${departure.text}');
+                    print('destiation: ${destination.text}');
+                    Ticket ticket = Ticket(
+                      tailure: Tailure.text,
+                      level: level.text,
+                      plate: plateNumber.text,
                       date: DateTime.now(),
                       destination: destination.text,
-                      busNumber: bus_no.text,
-                      uniqueId: Random().nextInt(100000),
+                      departure: departure.text,
+                      uniqueId: Random().nextInt(10000000),
+                      tariff: double.parse(tariff.text),
+                      charge: double.parse(serviceCharge.text),
                     );
                     BusInfo busInfo = BusInfo(
-                      busNumber: 'ET 1234',
+                      plateNumber: 'ET 1234',
                       totalCapacity: 50,
                       currentCapacity: 20,
                       destination: destination.text,
@@ -340,39 +561,40 @@ class BuyTicketState extends State<BuyTicket> {
                     String userJson =
                         prefs.getString('user_registration') ?? '[]';
 
-// Parse the JSON string to a List of Users
-                    List<User> userList =
+                    // Parse the JSON string to a List of Users
+                    List<Ticket> ticketList =
                         (json.decode(userJson) as List<dynamic>)
-                            .map((item) => User.fromJson(item))
+                            .map((item) => Ticket.fromJson(item))
                             .toList();
 
-// Add the new user to the list
-                    userList.add(user);
+                    // Add the new user to the list
+                    ticketList.add(ticket);
 
-// Store the updated user list back to SharedPreferences
-                    prefs.setString('user_registration', json.encode(userList));
+                    // Store the updated user list back to SharedPreferences
+                    prefs.setString(
+                        'user_registration', json.encode(ticketList));
 
-// ----------------==============================================
-// Retrieve existing bus list from SharedPreferences
+                    // ----------------==============================================
+                    // Retrieve existing bus list from SharedPreferences
                     String busJson = prefs.getString('bus_info') ?? '[]';
 
-// Parse the JSON string to a List of Buses
+                    // Parse the JSON string to a List of Buses
                     List<BusInfo> busList =
                         (json.decode(busJson) as List<dynamic>)
                             .map((item) => BusInfo.fromJson(item))
                             .toList();
 
-// Update the current capacity of the appropriate bus (you need to implement logic to find the correct bus to update)
+                    // Update the current capacity of the appropriate bus (you need to implement logic to find the correct bus to update)
 
-// Add the updated bus back to the list
+                    // Add the updated bus back to the list
 
                     // Assuming you have some logic to find the appropriate bus to update
                     String busNumberToUpdate = bus_no
                         .text; // Replace this with your logic to find the correct bus number to update
                     BusInfo? busToUpdate = busList.firstWhere(
-                      (bus) => bus.busNumber == busNumberToUpdate,
+                      (bus) => bus.plateNumber == busNumberToUpdate,
                       orElse: () => BusInfo(
-                          busNumber: bus_no.text,
+                          plateNumber: bus_no.text,
                           totalCapacity: 50,
                           currentCapacity: 0,
                           destination: destination.text),
@@ -384,7 +606,7 @@ class BuyTicketState extends State<BuyTicket> {
 
                       // Add the updated bus back to the list
                       busList.removeWhere(
-                          (bus) => bus.busNumber == busNumberToUpdate);
+                          (bus) => bus.plateNumber == busNumberToUpdate);
                       busList.add(busToUpdate);
 
                       // Store the updated bus list back to SharedPreferences
@@ -393,7 +615,7 @@ class BuyTicketState extends State<BuyTicket> {
                       print('Bus with number $busNumberToUpdate not found.');
                     }
 
-// Store the updated bus list back to SharedPreferences
+                    // Store the updated bus list back to SharedPreferences
                     prefs.setString('bus_info', json.encode(busList));
 
                     // ignore: use_build_context_synchronously
@@ -401,7 +623,7 @@ class BuyTicketState extends State<BuyTicket> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ResultPage(
-                          user: user,
+                          ticket: ticket,
                         ), //
                       ),
                     );

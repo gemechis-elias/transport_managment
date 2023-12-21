@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:transport_app/models/user.dart';
+import 'package:transport_app/core/my_colors.dart';
+import 'package:transport_app/models/ticket.dart';
 import 'dart:convert';
 
 import '../result/ticket_result.dart';
@@ -13,8 +14,8 @@ class SoldTickets extends StatefulWidget {
 }
 
 class SoldTicketsState extends State<SoldTickets> {
-  List<User> _userList = [];
-  List<User> _filteredUsers = [];
+  List<Ticket> _ticketList = [];
+  List<Ticket> _filteredTicket = [];
 
   @override
   void initState() {
@@ -26,23 +27,22 @@ class SoldTicketsState extends State<SoldTickets> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userJson = prefs.getString('user_registration') ?? '[]';
     List<dynamic> userData = json.decode(userJson);
-    List<User> users = userData.map((data) => User.fromJson(data)).toList();
+    List<Ticket> users = userData.map((data) => Ticket.fromJson(data)).toList();
     // reverse the list to show the latest user first
     users = users.reversed.toList();
 
     setState(() {
-      _userList = users;
-      _filteredUsers = users; // Initialize filtered list with all users
+      _ticketList = users;
+      _filteredTicket = users; // Initialize filtered list with all users
     });
   }
 
   void _filterUsers(String searchText) {
     setState(() {
-      _filteredUsers = _userList
+      _filteredTicket = _ticketList
           .where((user) =>
-              user.firstName.toLowerCase().contains(searchText.toLowerCase()) ||
-              user.lastName.toLowerCase().contains(searchText.toLowerCase()) ||
-              user.busNumber.toLowerCase().contains(searchText.toLowerCase()))
+              user.tailure.toLowerCase().contains(searchText.toLowerCase()) ||
+              user.plate.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     });
   }
@@ -52,6 +52,29 @@ class SoldTicketsState extends State<SoldTickets> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sold tickets'),
+        actions: [
+          SizedBox(
+            width: 110,
+            height: 40,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: MyColors.primary, elevation: 0),
+              child: const Text(
+                "Upload",
+                style:  TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontFamily: 'Poppins-Regular',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () async {},
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -69,28 +92,27 @@ class SoldTicketsState extends State<SoldTickets> {
           ),
 
           Expanded(
-            child: _filteredUsers.isEmpty
+            child: _filteredTicket.isEmpty
                 ? const Center(child: Text('No matching users found.'))
                 : ListView.builder(
-                    itemCount: _filteredUsers.length,
+                    itemCount: _filteredTicket.length,
                     itemBuilder: (context, index) {
-                      User user = _filteredUsers[index];
+                      Ticket ticket = _filteredTicket[index];
                       return InkWell(
                         onTap: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ResultPage(
-                                user: user,
+                                ticket: ticket,
                               ),
                             ),
                           );
                         },
                         child: Container(
                           child: ListTile(
-                            title: Text(
-                                'Name: ${user.firstName} ${user.lastName}'),
-                            subtitle: Text('Bus No: ${user.busNumber}'),
+                            title: Text('Name: ${ticket.tailure}'),
+
                             // Add more details here if needed
                           ),
                         ),

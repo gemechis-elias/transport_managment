@@ -8,7 +8,7 @@ import 'package:transport_app/result/bus_result.dart';
 import '../core/my_colors.dart';
 import '../core/my_text.dart';
 import '../models/bus.dart';
-import '../models/user.dart';
+import '../models/ticket.dart';
 import '../result/ticket_result.dart';
 
 class AddBus extends StatefulWidget {
@@ -197,7 +197,7 @@ class AddBusState extends State<AddBus> {
                     //
 
                     BusInfo busInfo = BusInfo(
-                      busNumber: busNumber.text,
+                      plateNumber: busNumber.text,
                       totalCapacity: int.parse(totalCapacity.text),
                       currentCapacity: 0,
                       destination: selectedDestination,

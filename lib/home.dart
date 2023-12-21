@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:transport_app/add_bus/add_bus.dart';
-
+import 'package:transport_app/core/my_text.dart';
+import 'package:transport_app/widgets/language_dropdowns.dart';
+import '../core/my_colors.dart';
 import 'buy_tickets/buy_ticket.dart';
-import 'enddrawer.dart';
+import 'widgets/enddrawer.dart';
 import 'queue/queue.dart';
 import 'sold_tickets/tickets.dart';
 
@@ -17,26 +19,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final List<Map<String, dynamic>> data_list = [
     {
-      'title': 'Register Passenger',
+      'title': 'Generate ticket',
       'image': 'assets/images/passenger.jpg',
     },
     {
-      'title': 'Bus Queue Management',
-      'image': 'assets/images/bus.jpg',
+      'title': 'Bus queue',
+      'image': 'assets/images/bus.png',
     },
     {
-      'title': 'See Tickets Sold',
+      'title': 'sold tickets',
       'image': 'assets/images/tickets.jpg',
-    },
-    {
-      'title': 'Add Bus',
-      'image': 'assets/images/add_bus.png',
     },
   ];
 
   late PageController _pageController;
   late Timer _timer;
-  int _currentPage = 0;
+  bool _isRefreshing = false;
 
   @override
   void initState() {
@@ -52,13 +50,19 @@ class _HomeState extends State<Home> {
   }
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  static final GlobalKey<_HomeState> homeKey = GlobalKey<_HomeState>();
 
   void onDrawerItemClicked(String name) {
     Navigator.pop(context);
   }
 
+  void rebuild() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    Locale currentLocale = context.locale;
     return RefreshIndicator(
       onRefresh: () async {
         await Future.delayed(const Duration(seconds: 1));
@@ -68,11 +72,11 @@ class _HomeState extends State<Home> {
         key: scaffoldKey,
         backgroundColor: const Color(0xffF8FAFF),
         appBar: AppBar(
-          backgroundColor: const Color(0xffF8FAFF),
+          backgroundColor: MyColors.primary,
           leading: IconButton(
             icon: const Icon(
               Icons.sort,
-              color: Colors.black,
+              color: Colors.white,
               size: 37,
             ),
             onPressed: () {
@@ -80,14 +84,23 @@ class _HomeState extends State<Home> {
             },
           ),
           title: Container(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: const Text(
-                "Transport App",
-                style: TextStyle(
-                  fontFamily: 'Urbanist-Bold',
-                  fontSize: 23,
-                ),
-              )),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: Text(
+              "Transport".tr(),
+              style: const TextStyle(
+                fontFamily: 'Poppins-Regular',
+                color: Colors.white,
+                fontSize: 23,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          actions: [
+            LanguageDropdown(onLanguageChanged: () {
+              homeKey.currentState?.setState(() {});
+              rebuild();
+            }),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -96,58 +109,14 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 10,
               ),
-              // SizedBox(
-              //   height: 130,
-              //   child: PageView(
-              //     controller: _pageController,
-              //     children: [
-              //       SizedBox(
-              //         width: MediaQuery.of(context).size.width,
-              //         child: ClipRRect(
-              //           child: Image.asset(
-              //             'assets/images/slider 4.jpg',
-              //             fit: BoxFit.cover,
-              //             width: double.infinity,
-              //             height: double.infinity,
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(
-              //         width: MediaQuery.of(context).size.width,
-              //         child: ClipRRect(
-              //           child: Image.asset(
-              //             'assets/images/slider 2.png.jpg',
-              //             fit: BoxFit.cover,
-              //             width: double.infinity,
-              //             height: double.infinity,
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(
-              //         width: MediaQuery.of(context).size.width,
-              //         child: ClipRRect(
-              //           child: Image.asset(
-              //             'assets/images/slider 4.jpg',
-              //             fit: BoxFit.cover,
-              //             width: double.infinity,
-              //             height: double.infinity,
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
+              Padding(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 5,
                 ),
                 child: Text(
-                  'Services',
-                  style: TextStyle(
+                  'Services'.tr(),
+                  style: const TextStyle(
                     fontFamily: 'Urbanist-Bold',
                     color: Color.fromARGB(215, 7, 39, 15),
                     fontSize: 23,
@@ -164,7 +133,7 @@ class _HomeState extends State<Home> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>  BuyTicket(), //
+                        builder: (context) => BuyTicket(), //
                       ),
                     );
                   },
@@ -203,11 +172,12 @@ class _HomeState extends State<Home> {
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 // textAlign: TextAlign.left,
-                                data_list[0]['title'].toUpperCase(),
+                                "${data_list[0]['title']}".tr(),
                                 maxLines: 4,
                                 style: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "Urbanist-Regular"),
+                                  fontSize: 17,
+                                  fontFamily: 'Poppins-Regular',
+                                ),
                               ),
                             ),
                           ),
@@ -264,11 +234,12 @@ class _HomeState extends State<Home> {
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 // textAlign: TextAlign.left,
-                                data_list[1]['title'].toUpperCase(),
+                                "${data_list[1]['title']}".tr(),
                                 maxLines: 4,
                                 style: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "Urbanist-Regular"),
+                                  fontSize: 17,
+                                  fontFamily: 'Poppins-Regular',
+                                ),
                               ),
                             ),
                           ),
@@ -277,7 +248,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-              ), // Card 2
+              ), // Card 3
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: InkWell(
@@ -324,11 +295,12 @@ class _HomeState extends State<Home> {
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 // textAlign: TextAlign.left,
-                                data_list[2]['title'].toUpperCase(),
+                                "${data_list[2]['title']}".tr(),
                                 maxLines: 4,
                                 style: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "Urbanist-Regular"),
+                                  fontSize: 17,
+                                  fontFamily: 'Poppins-Regular',
+                                ),
                               ),
                             ),
                           ),
@@ -338,70 +310,57 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: InkWell(
-                  onTap: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>  AddBus(), //
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.12,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(190, 196, 202, 0.2),
-                          blurRadius: 14,
-                          offset: Offset(0, 9),
-                        ),
-                      ],
-                    ),
-                    child: Card(
-                      surfaceTintColor: Colors.white,
-                      margin: const EdgeInsets.all(0),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 60,
-                            child: Image.asset(data_list[3]['image']),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                // textAlign: TextAlign.left,
-                                data_list[3]['title'].toUpperCase(),
-                                maxLines: 4,
-                                style: const TextStyle(
-                                    fontSize: 17,
-                                    fontFamily: "Urbanist-Regular"),
-                              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+              ),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: MyColors.primary, elevation: 0),
+                    child: _isRefreshing
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
                             ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.refresh, color: Colors.white),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Refresh",
+                                style: MyText.subhead(context)!
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
+                    onPressed: () {
+                      print('refresh is pressed!!');
+                      setState(() {
+                        _isRefreshing = true;
+                      });
+                      Future.delayed(
+                        const Duration(seconds: 3),
+                        () {
+                          setState(() {
+                            _isRefreshing = false;
+                          });
+                        },
+                      );
+                    },
                   ),
                 ),
               )
             ],
           ),
         ),
-        drawer:  EndDrawers(),
+        drawer: EndDrawers(),
       ),
     );
   }

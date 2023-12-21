@@ -77,7 +77,7 @@ class BusResultState extends State<BusResult> {
                                   color: Colors.black,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold)),
-                          Text(widget.bus.busNumber,
+                          Text(widget.bus.plateNumber,
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -142,7 +142,7 @@ class BusResultState extends State<BusResult> {
                     ),
                     child: Center(
                       child: QrImageView(
-                        data: widget.bus.busNumber.toString(),
+                        data: widget.bus.plateNumber.toString(),
                         version: QrVersions.auto,
                         size: 200.0,
                       ),

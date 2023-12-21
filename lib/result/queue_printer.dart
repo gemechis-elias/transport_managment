@@ -1,22 +1,38 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:bluetooth_print/bluetooth_print.dart';
 import 'package:bluetooth_print/bluetooth_print_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:transport_app/models/ticket.dart';
-import 'dart:typed_data';
-import 'package:qr_flutter/qr_flutter.dart';
+// import 'package:qr_flutter/qr_flutter.dart';
 
-class PrinterPage extends StatefulWidget {
-  final Ticket ticket;
-  const PrinterPage({super.key, required this.ticket});
+import 'package:transport_app/models/ticket.dart';
+
+class QueuePrinter extends StatefulWidget {
+  String arrivalTime;
+  String departureTime;
+  String plate;
+  String route;
+  String departure;
+  double distance;
+  QueuePrinter({
+    Key? key,
+    required this.arrivalTime,
+    required this.departureTime,
+    required this.plate,
+    required this.route,
+    required this.departure,
+    required this.distance,
+  }) : super(key: key);
+
   @override
-  _PrinterPageState createState() => _PrinterPageState();
+  _QueuePrinterState createState() => _QueuePrinterState();
 }
 
-class _PrinterPageState extends State<PrinterPage> {
+class _QueuePrinterState extends State<QueuePrinter> {
   BluetoothPrint bluetoothPrint = BluetoothPrint.instance;
 
   bool _connected = false;
@@ -73,7 +89,7 @@ class _PrinterPageState extends State<PrinterPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Printing Page'),
+        title: const Text('Queue Printer'),
       ),
       body: RefreshIndicator(
         onRefresh: () =>
@@ -102,9 +118,11 @@ class _PrinterPageState extends State<PrinterPage> {
                           title: Text(d.name ?? ''),
                           subtitle: Text(d.address ?? ''),
                           onTap: () async {
-                            setState(() {
-                              _device = d;
-                            });
+                            setState(
+                              () {
+                                _device = d;
+                              },
+                            );
                           },
                           trailing:
                               _device != null && _device!.address == d.address
@@ -132,14 +150,18 @@ class _PrinterPageState extends State<PrinterPage> {
                               : () async {
                                   if (_device != null &&
                                       _device!.address != null) {
-                                    setState(() {
-                                      tips = 'connecting...';
-                                    });
+                                    setState(
+                                      () {
+                                        tips = 'connecting...';
+                                      },
+                                    );
                                     await bluetoothPrint.connect(_device!);
                                   } else {
-                                    setState(() {
-                                      tips = 'please select device';
-                                    });
+                                    setState(
+                                      () {
+                                        tips = 'please select device';
+                                      },
+                                    );
                                     print('please select device');
                                   }
                                 },
@@ -149,9 +171,11 @@ class _PrinterPageState extends State<PrinterPage> {
                         OutlinedButton(
                           onPressed: _connected
                               ? () async {
-                                  setState(() {
-                                    tips = 'disconnecting...';
-                                  });
+                                  setState(
+                                    () {
+                                      tips = 'disconnecting...';
+                                    },
+                                  );
                                   await bluetoothPrint.disconnect();
                                 }
                               : null,
@@ -165,46 +189,55 @@ class _PrinterPageState extends State<PrinterPage> {
                           ? () async {
                               Map<String, dynamic> config = Map();
                               List<LineText> list = [];
+                              List<LineText> list1 = [];
 
-                              list.add(LineText(
+                              list.add(
+                                LineText(
                                   type: LineText.TYPE_TEXT,
-                                  content:
-                                      '**********************************************',
+                                  content: '================================',
                                   weight: 1,
                                   align: LineText.ALIGN_CENTER,
-                                  linefeed: 1));
-                              list.add(LineText(
-                                type: LineText.TYPE_TEXT,
-                                content: 'BUS TICKET',
-                                weight: 1,
-                                align: LineText.ALIGN_CENTER,
-                                fontZoom: 2,
-                                linefeed: 1,
-                              ));
+                                  linefeed: 1,
+                                ),
+                              );
+                              list.add(
+                                LineText(
+                                  type: LineText.TYPE_TEXT,
+                                  content: 'Tikeetii Bahumsaa/ የመውጫ ቲኬት',
+                                  weight: 2,
+                                  align: LineText.ALIGN_CENTER,
+                                  linefeed: 1,
+                                ),
+                              );
+
                               list.add(LineText(linefeed: 1));
 
                               list.add(LineText(
                                 type: LineText.TYPE_TEXT,
-                                content: '----------Ticket--------------',
+                                content:
+                                    "የገባበት ሰዓት/Sa'aatii itti seene: ${widget.arrivalTime}",
                                 weight: 1,
                                 align: LineText.ALIGN_CENTER,
                                 linefeed: 1,
                               ));
-                              
-                              list.add(LineText(
-                                type: LineText.TYPE_TEXT,
-                                content: 'Ticket No:- ....${widget.ticket.uniqueId}}',
-                                weight: 1,
-                                align: LineText.ALIGN_LEFT,
-                                x: 0,
-                                y: 40,
-                                relativeX: 0,
-                                linefeed: 1,
-                              ));
+
+                              list.add(
+                                LineText(
+                                  type: LineText.TYPE_TEXT,
+                                  content:
+                                      "የወጣበት ሰዓት/Sa'aatii itti bahe: ${widget.departureTime}",
+                                  weight: 1,
+                                  align: LineText.ALIGN_LEFT,
+                                  x: 0,
+                                  y: 40,
+                                  relativeX: 0,
+                                  linefeed: 1,
+                                ),
+                              );
                               list.add(LineText(
                                 type: LineText.TYPE_TEXT,
                                 content:
-                                    'Plate Number:- .... ${widget.ticket.plate}',
+                                    'ታርጋ/ Lakkoofsa Gabatee: ${widget.plate}',
                                 weight: 1,
                                 align: LineText.ALIGN_LEFT,
                                 x: 0,
@@ -214,7 +247,7 @@ class _PrinterPageState extends State<PrinterPage> {
                               ));
                               list.add(LineText(
                                 type: LineText.TYPE_TEXT,
-                                content: "Tailer:- ....${widget.ticket.tailure}",
+                                content: "ስምሪት/ Buufata: ${widget.route}",
                                 weight: 1,
                                 align: LineText.ALIGN_LEFT,
                                 x: 0,
@@ -224,7 +257,8 @@ class _PrinterPageState extends State<PrinterPage> {
                               ));
                               list.add(LineText(
                                 type: LineText.TYPE_TEXT,
-                                content: 'Date:- . ${widget.ticket.date}',
+                                content:
+                                    'መዳረሻ ከተማ/ Magaalaa Gahumsaa: ${widget.departure}',
                                 align: LineText.ALIGN_LEFT,
                                 x: 0,
                                 y: 100,
@@ -233,26 +267,30 @@ class _PrinterPageState extends State<PrinterPage> {
                               ));
                               list.add(LineText(
                                 type: LineText.TYPE_TEXT,
-                                content: 'Departure:- ...${widget.ticket.departure}',
+                                content: 'ርቀት/Fageenya: ${widget.distance} KM',
                                 align: LineText.ALIGN_LEFT,
                                 x: 0,
                                 y: 120,
                                 relativeX: 0,
                                 linefeed: 1,
                               ));
-                              list.add(LineText(
+                              list.add(
+                                LineText(
                                   type: LineText.TYPE_TEXT,
-                                  content:
-                                      'Destination:- ..${widget.ticket.destination}',
+                                  content: '==============================',
                                   align: LineText.ALIGN_LEFT,
                                   x: 0,
                                   y: 140,
                                   relativeX: 0,
-                                  linefeed: 0));
-                                list.add(LineText(
+                                  linefeed: 0,
+                                ),
+                              );
+                              list.add(LineText(linefeed: 1));
+                              list.add(LineText(linefeed: 1));
+
+                              list.add(LineText(
                                 type: LineText.TYPE_TEXT,
-                                content:
-                                    'Level:- .....${widget.ticket.level}',
+                                content: 'Huubachiisa:Tikeetin kun emala yeroo',
                                 weight: 1,
                                 align: LineText.ALIGN_LEFT,
                                 x: 0,
@@ -262,8 +300,7 @@ class _PrinterPageState extends State<PrinterPage> {
                               ));
                               list.add(LineText(
                                 type: LineText.TYPE_TEXT,
-                                content:
-                                    'Tariff: .........${widget.ticket.tariff}}',
+                                content: 'tokkoo qofaaf tajaajila!',
                                 weight: 1,
                                 align: LineText.ALIGN_LEFT,
                                 x: 0,
@@ -271,48 +308,45 @@ class _PrinterPageState extends State<PrinterPage> {
                                 relativeX: 0,
                                 linefeed: 1,
                               ));
-                              list.add(LineText(
-                                type: LineText.TYPE_TEXT,
-                                content:
-                                    'Service charge:- ......${widget.ticket.charge}',
-                                weight: 1,
-                                align: LineText.ALIGN_LEFT,
-                                x: 0,
-                                y: 200,
-                                relativeX: 0,
-                                linefeed: 1,
-                              ));
-                              list.add(LineText(linefeed: 1));
-                              list.add(LineText(linefeed: 1));
                               list.add(
                                 LineText(
-                                  type: LineText.TYPE_BARCODE,
-                                  align: LineText.ALIGN_CENTER,
-                                  size: 10,
-                                  x: 10,
-                                  y: 230,
-                                  content: '${widget.ticket.uniqueId}\n',
+                                  type: LineText.TYPE_TEXT,
+                                  content: 'ማሳሰቢያ፡ ይህ የመውጫ ቲኬት ለአንድ ጉዞ ብቻ',
+                                  weight: 1,
+                                  align: LineText.ALIGN_LEFT,
+                                  x: 0,
+                                  y: 200,
+                                  relativeX: 0,
+                                  linefeed: 1,
                                 ),
                               );
-                              // list.add(LineText(
-                              //   type: LineText.TYPE_QRCODE,
-                              //   content: '${widget.user.uniqueId}\n',
-                              //   align: LineText.ALIGN_CENTER,
-                              //   x: 0,
-                              //   y: 200,
-                              //   size: 10,
-                              // ));
 
-                              list.add(LineText(
+                              list.add(
+                                LineText(
                                   type: LineText.TYPE_TEXT,
-                                  content:
-                                      '**********************************************',
+                                  content: 'የሚያገለግል ነው!',
                                   weight: 1,
                                   align: LineText.ALIGN_CENTER,
-                                  linefeed: 1));
+                                  linefeed: 1,
+                                ),
+                              );
+
+                              list.add(LineText(linefeed: 1));
                               list.add(LineText(linefeed: 1));
 
-                              await bluetoothPrint.printReceipt(config, list);
+                              String utf8String = String.fromCharCodes(utf8.encode('አማርኛ!'));
+
+                              
+                              list1.add(LineText(
+                                type: LineText.TYPE_TEXT,
+                                x: 0,
+                                y: 10,
+                                content: utf8String,
+                                weight: 1,
+                                align: LineText.ALIGN_CENTER,
+                              ));
+
+                              await bluetoothPrint.printReceipt(config, list1);
                             }
                           : null,
                       child: const Text('print receipt'),
