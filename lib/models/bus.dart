@@ -1,31 +1,23 @@
-class BusInfo {
-  String busNumber;
+class Vehicle {
+  String plateNumber;
   int totalCapacity;
-  int currentCapacity;
-  String destination;
 
-  BusInfo({
-    required this.busNumber,
+  Vehicle({
+    required this.plateNumber,
     required this.totalCapacity,
-    required this.currentCapacity,
-    required this.destination,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'busNumber': busNumber,
+      'busNumber': plateNumber,
       'totalCapacity': totalCapacity,
-      'currentCapacity': currentCapacity,
-      'destination': destination,
     };
   }
 
-  factory BusInfo.fromJson(Map<String, dynamic> json) {
-    return BusInfo(
-      busNumber: json['busNumber'] ?? '',
+  factory Vehicle.fromJson(Map<String, dynamic> json) {
+    return Vehicle(
+      plateNumber: json['plateNumber'] ?? '',
       totalCapacity: json['totalCapacity'] ?? 0,
-      currentCapacity: json['currentCapacity'] ?? 0,
-      destination: json['destination'] ?? '',
     );
   }
 }

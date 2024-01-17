@@ -1,42 +1,31 @@
-class User {
-  String firstName;
-  String lastName;
+class UserModel {
+  String name;
   String phone;
-  DateTime date;
-  String destination;
-  String busNumber;
-  int uniqueId;
+  String password;
+  String password_confirmation;
 
-  User({
-    required this.firstName,
-    required this.lastName,
+  UserModel({
+    required this.name,
     required this.phone,
-    required this.date,
-    required this.destination,
-    required this.busNumber,
-    required this.uniqueId,
+    required this.password,
+    required this.password_confirmation,
   });
+
   Map<String, dynamic> toJson() {
     return {
-      'firstName': firstName,
-      'lastName': lastName,
+      'name': name,
       'phone': phone,
-      'date': date.toIso8601String(),
-      'destination': destination,
-      'busNumber': busNumber,
-      'uniqueId': uniqueId,
+      'password': password,
+      'password_confirmation': password_confirmation,
     };
   }
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      firstName: json['firstName'] ?? '',
-      lastName: json['lastName'] ?? '',
-      phone: json['phone'] ?? '',
-      date: DateTime.parse(json['date'] ?? ''),
-      destination: json['destination'] ?? '',
-      busNumber: json['busNumber'] ?? '',
-      uniqueId: json['uniqueId'] ?? 0,
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      name: json['name'] ?? '',
+      phone: json['phone'] ?? 0,
+      password: json['password'] ?? 0,
+      password_confirmation: json['password_confirmation'] ?? '',
     );
   }
 }
