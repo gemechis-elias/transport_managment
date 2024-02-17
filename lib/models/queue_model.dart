@@ -1,12 +1,10 @@
-class Queue {
+class QueueModel {
   String plateNumber;
-  String order;
   String date;
   String time;
 
-  Queue({
+  QueueModel({
     required this.plateNumber,
-    required this.order,
     required this.date,
     required this.time,
   });
@@ -14,17 +12,15 @@ class Queue {
   Map<String, dynamic> toJson() {
     return {
       'plateNumber': plateNumber,
-      'order': order,
       'date': date,
       'time': time,
     };
   }
 
-  factory Queue.fromJson(Map<String, dynamic> json) {
-    return Queue(
+  factory QueueModel.fromJson(Map<String, dynamic> json) {
+    return QueueModel(
       plateNumber: json['plateNumber'] ?? '',
-      order: json['order'] ?? 0,
-      date: json['date'] ?? 0,
+      date: json['date'].toString(),
       time: json['time'] ?? '',
     );
   }

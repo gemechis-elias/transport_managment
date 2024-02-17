@@ -11,6 +11,7 @@
     "logout":"Log Out",
     "Buy Ticket":"Buy Ticket",
     "Tailor":"Tailor",
+    "No of ticket":"No of tickets",
     "Level":"Level",
     "Bus Plate Number":"Bus Plate Number",
     "Date":"Date",
@@ -30,5 +31,8 @@
     "Success":"Successfully added to queue!",
     "failure":"This bus is already in the queue!",
     "Queue Details":"Queue Details",
-    "Print":"Print"
+    "Print":"Print",
+    "Refresh":"Refresh",
+    "Upload":"Upload",
+    "Sold tickets":"Sold tickets"
 }

@@ -11,6 +11,7 @@
     "logout":"ውጣ",
     "Buy Ticket":"ቲኬት ይግዙ",
     "Tailor":"ቲኬት ቆራጭ",
+    "No of ticket":"ቲኬት ብዛት",
     "Level":"ደረጃ",
     "Bus Plate Number":"የአውቶቡስ መለያ ቁጥር",
     "Date":"ቀን",
@@ -30,5 +31,8 @@
     "Success":"በተሳካ ሁኔታ ወደ የአውቶቡስ ወረፋ አስተዳደር ገብቷል!",
     "failure":"ቀድሞ ተመዝጎቦ ነበር!",
     "Queue Details":"የአውቶቡስ ወረፋ ዝርዝር",
-    "Print":"አሳይ"
+    "Print":"አሳይ",
+    "Refresh":"አድስ",
+    "Upload":"አስገባ",
+    "Sold tickets":"የተሸጡ ቲኬቶች"
 }

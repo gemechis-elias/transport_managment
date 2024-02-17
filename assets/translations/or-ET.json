@@ -11,6 +11,7 @@
     "logout":"Ba'aa",
     "Buy Ticket":"Tikeetii Imaltootaa",
     "Tailor":"Ticket Tailor kan jedhu",
+    "No of ticket":"Baay'ina tikkeettii",
     "Level":"Sadarkaa",
     "Bus Plate Number":"Lakkoofsa Gabatee Awtoobisii",
     "Date":"Guyyaa",
@@ -30,5 +31,8 @@
     "Success":"Successfully added to queue!",
     "failure":"This bus is already in the queue!",
     "Queue Details":"Queue Details",
-    "Print":"Print"
+    "Print":"Print",
+    "Refresh":"Haaromsi",
+    "Upload":"Olkaa'uu",
+    "Sold tickets":"Tikeetii gurgurame"
 }
